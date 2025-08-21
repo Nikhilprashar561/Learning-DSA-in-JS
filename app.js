@@ -58,3 +58,44 @@ let r = 7
 let w =  2 * (22 / 7) * r
 
 console.log(w)
+
+
+Giving Discount to user according their shopping totals 👇
+
+let amt = Number(prompt("Enter Total Amount"));
+let dis = 0;
+
+if (amt > 0 && amt <= 5000) {
+  dis = 0;
+} else if (amt > 5000 && amt <= 7000) {
+  dis = 5;
+} else if (amt > 7000 && amt <= 9000) {
+  dis = 10;
+} else if (amt > 9000) {
+  dis = 20;
+} else {
+  console.log(`Abe Chal Nah Chuitye`);
+}
+console.log(amt - Math.floor((dis * amt) / 100));
+console.log(A);
+
+
+Check User Electricity bill acorrding to their units 👇
+
+let unit = Number(prompt("Enter Your Electricity Unints"))
+let amount = 0;
+
+if (unit > 400){
+   amount = (unit - 400) * 13
+   unit = 400
+} if (unit > 200 && unit <= 400){
+    amount += (unit - 200) * 8
+    unit = 200
+} if (unit > 100 && unit <= 200){
+    amount += (unit - 100) * 6
+    unit = 100
+}
+
+amount += unit * 4
+
+console.log(amount)
