@@ -60,7 +60,7 @@ let w =  2 * (22 / 7) * r
 console.log(w)
 
 
-Giving Discount to user according their shopping totals 👇
+// Giving Discount to user according their shopping totals 👇
 
 let amt = Number(prompt("Enter Total Amount"));
 let dis = 0;
@@ -80,7 +80,7 @@ console.log(amt - Math.floor((dis * amt) / 100));
 console.log(A);
 
 
-Check User Electricity bill acorrding to their units 👇
+// Check User Electricity bill acorrding to their units 👇
 
 let unit = Number(prompt("Enter Your Electricity Unints"))
 let amount = 0;
@@ -99,3 +99,48 @@ if (unit > 400){
 amount += unit * 4
 
 console.log(amount)
+
+
+// User have give a hard code amount and we will find how many notes are comes in that amount 👇
+
+let amount = 4883
+
+let f = 0
+let t = 0
+let o = 0
+let p = 0
+let b = 0
+let d = 0
+let one = 0
+
+if(amount >= 500){
+   f = Math.floor(amount / 500)
+    amount = amount % 500
+} if(amount >= 200){
+   t = Math.floor(amount / 200)
+    amount = amount % 200
+} if(amount >= 100){
+   o = Math.floor(amount / 100)
+    amount = amount % 100
+} if(amount >= 50){
+   p = Math.floor(amount / 50)
+    amount = amount % 50
+} if(amount >= 20){
+   b = Math.floor(amount / 20)
+    amount = amount % 20
+} if(amount >= 10){
+   d = Math.floor(amount / 10)
+    amount = amount % 10
+} if(amount > 0 && amount < 10){
+    one = Math.floor(amount / 1)
+    amount = amount % 1
+}
+
+console.log("Yeh h 500 ke notes : ", f)
+console.log("Yeh h 200 ke notes : ", t)
+console.log("Yeh h 100 ke notes : ", o)
+console.log("Yeh h 50 ke notes : ", p)
+console.log("Yeh h 20 ke notes : ", b)
+console.log("Yeh h 10 ke notes : ", d)
+console.log("Yeh h 1 ke coins : ", one)
+console.log("Yeh Rahi Baki Ki Amount",amount)
