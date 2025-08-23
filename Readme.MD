@@ -1,4 +1,7 @@
 ```
-Today is 21 aug i complete first video Sheryians Coding School DSA in JS 
-Learn Simple variable Tricks how they Manipulate
+Data Structure and Algorithm in JavaScript.
+```
+
+```
+Today is 23 Aug 2025 Just Complete Lec - 3 Loops Statemenst ✔️
 ```
