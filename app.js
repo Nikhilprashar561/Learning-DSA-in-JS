@@ -201,3 +201,66 @@ while(n > 0){
 } else {
     console.log("Gym Jaya Kr tu BC",sum)
 }
+
+// Pattern Print Concept 👇
+
+let prompt = require("prompt-sync")()
+
+let d = Number(prompt("Enter a number :- "))
+
+for(let i = 1; i <= 5; i++){
+    for(let j = 1; j<=5;j++){
+        process.stdout.write("* ")
+    }
+    console.log()
+}
+
+let v = 0
+
+for(let i = 1;i<= 10; i++){
+    let ascii = 65
+    for(let j = 1; j<=i;j++){
+        // let k = v + j
+        process.stdout.write(`${String.fromCharCode(ascii)} `)
+        ascii++
+    }
+    console.log()
+}
+
+
+for(let i = 8; i >= 1 ; i-- ){
+    for(let j = 1; j<= i; j++){
+        process.stdout.write("* ")
+    }
+    console.log()
+}
+
+for(let i=1;i<=5;i++){
+
+    for(let j=1;j<=5-i;j++){
+        process.stdout.write("  ")
+    }
+
+    for(let j=1;j<=i;j++){
+        process.stdout.write("* ")
+    }
+    console.log()
+}
+
+for(let i = 1; i<=5;i++){
+    for(let j=1;j<=5;j++){
+        if(i == j || i+j == 5 + 1){
+            process.stdout.write("* ")
+        } else process.stdout.write("  ")
+    }
+    console.log()
+}
+
+for(let i = 1; i<=5;i++){
+    for(let j=1;j<=2 * 5 - 1;j++){
+        if(i == j || i+j == 2 * 5){
+            process.stdout.write("* ")
+        } else process.stdout.write("  ")
+    }
+    console.log()
+}
