@@ -16,7 +16,7 @@ Now Next Upcoming lecture then when first we explore more in depth about previou
 ```
 
 ```
-From Monday do GeeksForGeeks DSA 😒
+From Monday do GeeksForGeeks DSA
 ```
 
 ```
