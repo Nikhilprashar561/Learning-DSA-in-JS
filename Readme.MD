@@ -35,7 +35,7 @@ How Much Lecture We Are Study According to Sequence of Videos 👇
 ```
 Upcoming DSA in JavaScript Lecture 
 
-Lec 9 :- Sorting Algorithm
+Lec 9  :- Sorting Algorithm
 Lec 10 :- Recursion Level - 1
 Lec 11 :- Smart Math's Problem's
 Lec 12 :- Binary Search Algorithm
