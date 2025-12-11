@@ -11,8 +11,8 @@ Now Next Upcoming lecture then when first we explore more in depth about previou
 ```
 
 ```
->>> Now What we do when we are did recharge understand all dsa concept in GeeksForGeeks and deep dive solve dsa companies wise questions.
->>> Also Solve some Leet code questions.
+>>>  Now What we do when we are did recharge understand all dsa concept in GeeksForGeeks and deep dive solve dsa companies wise questions.
+>>>  Also Solve some Leet code questions.
 ```
 
 ```

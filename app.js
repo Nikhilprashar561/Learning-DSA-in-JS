@@ -31,7 +31,6 @@
 // console.log(Math.min(478,66,85))
 // let a = 89.54785
 // console.log(Number(a.toFixed(2)))
-
 // console.log(Math.floor(Math.random() * 900000 + 1000 ))
 
 // // Square root of Perimeter of Triangle 👇
