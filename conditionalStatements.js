@@ -176,3 +176,182 @@ function calculateShipping(weight, country, orderTotal) {
 }
 
 calculateShipping(0.5, "US", 50)
+
+// Question Seven 👇
+
+function calculateCoffeePrice(size, type, extras = {}) {
+  let totalPrice = 0;
+
+  if (!["small", "medium", "large"].includes(size)) {
+    return -1;
+  }
+
+  if (!["regular", "latte", "cappuccino", "mocha"].includes(type)) {
+    return -1;
+  }
+
+  if (size === "small") totalPrice += 3;
+  if (size === "medium") totalPrice += 4;
+  if (size === "large") totalPrice += 5;
+
+  if (type === "latte") totalPrice += 1;
+  if (type === "cappuccino") totalPrice += 1.5;
+  if (type === "mocha") totalPrice += 2;
+
+  if (extras.whippedCream) totalPrice += 0.5;
+  if (extras.extraShot) totalPrice += 0.75;
+
+  return Number(totalPrice.toFixed(2));
+}
+
+calculateCoffeePrice("small", "latte", false)
+
+// Question 08 👇
+
+// Question 09 👇
+
+// Question 10 👇
+
+function calculateTip(billAmount, serviceRating) {
+  let totalBill;
+  let temp;
+  if (billAmount <= 0) {
+    return null;
+  }
+  if (!Number.isInteger(serviceRating)) {
+    return null;
+  }
+  if (serviceRating < 1 || serviceRating > 5) {
+    return null;
+  }
+  if (serviceRating === 1) {
+    temp = (billAmount * 5) / 100;
+    totalBill = {
+      tipPercentage: 5,
+      tipAmount: temp,
+      totalAmount: billAmount + temp,
+    };
+  } else if (serviceRating === 2) {
+    temp = (billAmount * 10) / 100;
+    totalBill = {
+      tipPercentage: 10,
+      tipAmount: temp,
+      totalAmount: billAmount + temp,
+    };
+  } else if (serviceRating === 3) {
+    temp = (billAmount * 15) / 100;
+    totalBill = {
+      tipPercentage: 15,
+      tipAmount: temp,
+      totalAmount: billAmount + temp,
+    };
+  } else if (serviceRating === 4) {
+    temp = (billAmount * 20) / 100;
+    totalBill = {
+      tipPercentage: 20,
+      tipAmount: temp,
+      totalAmount: billAmount + temp,
+    };
+  } else if (serviceRating === 5) {
+    temp = (billAmount * 25) / 100;
+    totalBill = {
+      tipPercentage: 25,
+      tipAmount: temp,
+      totalAmount: billAmount + temp,
+    };
+  }
+  return totalBill;
+}
+
+calculateTip(100, 5)
+
+// Question 11 👇
+
+function calculateParkingFee(hours, vehicleType) {
+  let parkingFees;
+  let temp;
+  if (hours <= 0) {
+    return -1;
+  }
+  if (!["car", "motorcycle", "bus"].includes(vehicleType)) {
+    return -1;
+  }
+  hours = Math.ceil(hours);
+  if (vehicleType === "car") {
+    if (hours > 0 && hours <= 1) {
+      parkingFees = 5;
+    } else if (hours > 1) {
+      temp = hours - 1;
+      parkingFees = 5 + temp * 3;
+      if (parkingFees > 30) {
+        parkingFees = 30;
+      }
+    }
+  }
+  if (vehicleType === "motorcycle") {
+    if (hours > 0 && hours <= 1) {
+      parkingFees = 3;
+    } else if (hours > 1) {
+      temp = hours - 1;
+      parkingFees = 3 + temp * 2;
+      if (parkingFees > 18) {
+        parkingFees = 18;
+      }
+    }
+  }
+  if (vehicleType === "bus") {
+    if (hours > 0 && hours <= 1) {
+      parkingFees = 10;
+    } else if (hours > 1) {
+      temp = hours - 1;
+      parkingFees = 10 + temp * 7;
+      if (parkingFees > 60) {
+        parkingFees = 60;
+      }
+    }
+  }
+  return parkingFees;
+}
+
+calculateParkingFee(5, "car")
+
+// Question 12 👇
+
+function getSeasonActivity(month, temperature) {
+  let activities;
+  if (month < 1 || month > 12) {
+    return null;
+  }
+  if (month === 1 || month === 2 || month === 12) {
+    if (temperature < 0) {
+      activities = { season: "Winter", activity: "skiing" };
+    } else if (temperature >= 0) {
+      activities = { season: "Winter", activity: "ice skating" };
+    }
+  }
+  if (month === 3 || month === 4 || month === 5) {
+    if (temperature > 20) {
+      activities = { season: "Spring", activity: "hiking" };
+    } else if (temperature <= 20) {
+      activities = { season: "Spring", activity: "museum visit" };
+    }
+  }
+  if (month === 6 || month === 7 || month === 8) {
+    if (temperature > 35) {
+      activities = { season: "Summer", activity: "swimming" };
+    } else if (temperature <= 35) {
+      activities = { season: "Summer", activity: "cycling" };
+    }
+  }
+  if (month === 9 || month === 10 || month === 11) {
+    if (temperature > 15) {
+      activities = { season: "Autumn", activity: "nature walk" };
+    } else if (temperature <= 15) {
+      activities = { season: "Autumn", activity: "reading at a cafe" };
+    }
+  }
+
+  return activities;
+}
+
+getSeasonActivity(1, -5)
