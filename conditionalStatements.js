@@ -208,7 +208,75 @@ calculateCoffeePrice("small", "latte", false)
 
 // Question 08 👇
 
+export function calculateTax(income) {
+  let taxTotal = 0;
+
+  if (income <= 0) {
+    return 0;
+  }
+
+  // Follow Steps top to bottom.
+  if (income > 70000) {
+    taxTotal += (income - 70000) * 0.30;
+    income = 70000;
+  }
+
+  if (income > 30000) {
+    taxTotal += (income - 30000) * 0.20;
+    income = 30000;
+  }
+
+  if (income > 10000) {
+    taxTotal += (income - 10000) * 0.10;
+  }
+
+  return taxTotal;
+}
+
 // Question 09 👇
+
+function checkPasswordStrength(password) {
+  
+  if (typeof password !== "string" || password.length === 0) {
+    return "weak";
+  }
+
+  let criteriaCount = 0;
+
+  if (password.length >= 8) {
+    criteriaCount++;
+  }
+
+  if (/[A-Z]/.test(password)) {
+    criteriaCount++;
+  }
+
+  if(/[A-Z]/)
+
+  if (/[a-z]/.test(password)) {
+    criteriaCount++;
+  }
+
+  if (/[0-9]/.test(password)) {
+    criteriaCount++;
+  }
+
+  if (/[!@#$%^&*()_+\-=\[\]{}|;:,.<>?]/.test(password)) {
+    criteriaCount++;
+  }
+
+  if (criteriaCount <= 1) {
+    return "weak";
+  } else if (criteriaCount <= 3) {
+    return "medium";
+  } else if (criteriaCount === 4) {
+    return "strong";
+  } else {
+    return "very strong";
+  }
+}
+
+checkPasswordStrength("abcdefgh")
 
 // Question 10 👇
 
