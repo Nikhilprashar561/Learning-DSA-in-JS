@@ -631,4 +631,3 @@ export function generateThaliReceipt(customerName, thalis) {
 
   return `THALI RECEIPT\n---\nCustomer: ${customerName.toUpperCase()}\n${temp.join("\n")}\n---\nTotal: Rs.${tot}\nItems: ${thalis.length}`;
 }
-
