@@ -23,3 +23,41 @@ no_hero.name = "Chor"
 no_hero.department.sem = "Second"
 console.log("Change Copy",no_hero)
 console.log("Check First",hero)
+
+const arr = Array.from("Dust")
+console.log(arr)
+console.log(arr.length)
+arr.length = 3
+console.log(arr)
+arr.length = 5
+console.log(arr)
+
+const secri = {
+    name:"Dalla"
+}
+
+Object.defineProperty(secri, "roll_no", {
+    value: "253805",
+    writable: false,
+    enumerable: true,
+    configurable: false
+})
+
+console.log(secri)
+const test = Object.getOwnPropertyDescriptor(secri, "roll_no")
+console.log(check)
+
+const call  = function (val) {
+    return val
+}
+
+function im(){
+    const name = 'Nikhil'
+    let num = 2005
+    function pass (){
+        console.log(name)
+    }
+    return pass
+}
+const check = im()
+check()
