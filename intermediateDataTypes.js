@@ -199,8 +199,135 @@ export function parseWhatsAppMessage(message) {
 }
 
 // Question Seven 👇
+
+function generateReportCard(student) {
+  if (typeof student !== "object" || student === null) return null;
+  if (typeof student.name !== "string" || student.name.length === 0)
+    return null;
+  if (
+    typeof student.marks !== "object" ||
+    Object.keys(student.marks).length === 0
+  )
+    return null;
+
+  const totolMark = Object.values(student.marks);
+
+  if (totolMark.some((e) => typeof e !== "number" || e < 0 || e > 100)) {
+    return null;
+  }
+
+  let totalMarks = totolMark.reduce((arr, data) => {
+    return arr + data;
+  }, 0);
+  const percentage = (totalMarks / (totolMark.length * 100)) * 100;
+
+  let totolPercentage = parseFloat(percentage.toFixed(2));
+
+  let grade;
+  if (totolPercentage >= 90) {
+    grade = "A+";
+  } else if (totolPercentage >= 80) {
+    grade = "A";
+  } else if (totolPercentage >= 70) {
+    grade = "B";
+  } else if (totolPercentage >= 60) {
+    grade = "C";
+  } else if (totolPercentage >= 40) {
+    grade = "D";
+  } else if (totolPercentage < 40) {
+    grade = "F";
+  }
+
+  const figOut = Object.entries(student.marks);
+
+  let highestNum = figOut.reduce((highest, current) => {
+    return current[1] > highest[1] ? current : highest;
+  });
+
+  let lowestNum = figOut.reduce((lowest, current) => {
+    return current[1] < lowest[1] ? current : lowest;
+  });
+  let passSubject = figOut.filter((e) => {
+    return e[1] >= 40;
+  });
+  let failSubject = figOut.filter((e) => {
+    return e[1] < 40;
+  });
+  let passTotal = passSubject.map((e) => e[0]);
+  let failTotal = failSubject.map((e) => e[0]);
+
+  return {
+    name: student.name,
+    totalMarks,
+    percentage: totolPercentage,
+    grade,
+    highestSubject: highestNum[0],
+    lowestSubject: lowestNum[0],
+    passedSubjects: passTotal,
+    failedSubjects: failTotal,
+    subjectCount: figOut.length,
+  };
+}
+
+
 // Question Eight 👇
+
+function iplAuctionSummary(team, players) {
+  if (typeof team !== "object" || team === null) return null;
+  if (
+    typeof team.purse !== "number" ||
+    team.purse <= 0
+  )
+    return null;
+  if (!team.purse) return null;
+  if (!Array.isArray(players) || players.length === 0) return null;
+
+  let totalSpent = players.reduce((acc, cur) => {
+    return acc + cur.price;
+  }, 0);
+
+  const byRole = players.reduce((e, p) => {
+    const rr = p.role;
+    if (e[rr]) {
+      e[rr] += 1;
+    } else {
+      e[rr] = 1;
+    }
+    return e;
+  }, {});
+
+  let remaining = team.purse - totalSpent;
+
+  let costliestPlayer = players.reduce((h, cur) => {
+    return cur.price > h.price ? cur : h;
+  });
+  let cheapestPlayer = players.reduce((h, cur) => {
+    return cur.price < h.price ? cur : h;
+  });
+
+  let averagePrice = Math.round(totalSpent / players.length);
+
+  let isOverBudget;
+  if (totalSpent > team.purse) {
+    isOverBudget = true;
+  } else {
+    isOverBudget = false;
+  }
+
+  return {
+    teamName: team.name,
+    totalSpent,
+    remaining,
+    playerCount: players.length,
+    costliestPlayer,
+    cheapestPlayer,
+    averagePrice,
+    byRole,
+    isOverBudget,
+  };
+}
+
 // Question Nine 👇
 // Question Ten 👇
 // Question Eleven 👇
-// Question Twelve 👇
+// Question Twelvbe 👇
