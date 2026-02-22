@@ -376,8 +376,8 @@ console.log(arr)
 
 // Move Last Array Element left side by two index 👇
 
-Before : - [1, 2, 3, 4, 5]
-After :- [3, 4, 5, 1, 2]
+// Before : - [1, 2, 3, 4, 5]
+// After :- [3, 4, 5, 1, 2]
 
 let arr = [1, 2, 3, 4, 5]
 let k = 3
