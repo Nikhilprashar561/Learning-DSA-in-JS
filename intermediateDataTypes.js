@@ -329,7 +329,7 @@ function iplAuctionSummary(team, players) {
 
 // Question Nine 👇
 
-export function buildZomatoOrder(cart, coupon) {
+function buildZomatoOrder(cart, coupon) {
   if (!Array.isArray(cart) || cart.length === 0) {
     return null;
   }
@@ -406,7 +406,7 @@ export function buildZomatoOrder(cart, coupon) {
 
 // Question Ten 👇
 
-export function analyzeUPITransactions(transactions) {
+function analyzeUPITransactions(transactions) {
   if(!Array.isArray(transactions) || transactions.length === 0) return null
 
 
@@ -486,7 +486,7 @@ return {
 
 // Question Eleven 👇
 
-export function validateForm(formData) {
+function validateForm(formData) {
   let error = {};
 
     if (
@@ -571,7 +571,7 @@ export function validateForm(formData) {
 
 // Question Twelvbe 👇
 
-export function processRailwayPNR(pnrData) {
+function processRailwayPNR(pnrData) {
   if (!pnrData || typeof pnrData !== "object") return null;
   if (typeof pnrData.pnr !== "string") return null;
   if (pnrData.pnr.length !== 10 || !/^\d{10}$/.test(pnrData.pnr)) return null;
