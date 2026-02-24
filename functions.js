@@ -102,7 +102,163 @@ export const getPlayerCard = (player) => {
 };
 
 // Question Three 👇
+
+export function createTiffinPlan({ name, mealType = "veg", days = 30 } = {}) {
+  if (typeof name !== "string" || name.trim().length === 0) {
+    return null;
+  }
+
+  if (typeof mealType !== "string") {
+    return null;
+  }
+
+  mealType = mealType.trim().toLowerCase();
+
+  let dailyRate;
+
+  if (mealType === "veg") {
+    dailyRate = 80;
+  } else if (mealType === "nonveg") {
+    dailyRate = 120;
+  } else if (mealType === "jain") {
+    dailyRate = 90;
+  } else {
+    return null;
+  }
+
+  const totalCost = dailyRate * days;
+
+  return {
+    name: name.trim(),
+    mealType,
+    days,
+    dailyRate,
+    totalCost,
+  };
+}
+
+export function combinePlans(...plans) {
+  if (plans === null || plans.length === 0) return null;
+  let totalRevenue = plans.reduce((sum, curr) => {
+    return sum + curr.totalCost;
+  }, 0);
+  let veg = 0;
+  let nonveg = 0;
+  let mealBreakdown = plans.map((e) => {
+    if (e.mealType === "veg") veg++;
+    if (e.mealType === "nonveg") nonveg++;
+    return {
+      veg,
+      nonveg,
+    };
+  });
+  return {
+    totalCustomers: plans.length,
+    totalRevenue,
+    mealBreakdown: mealBreakdown.at(-1),
+  };
+}
+
+export function applyAddons(plan, ...addons) {
+  if (!plan) return null;
+
+  const totalAddonPrice = addons.reduce((sum, addon) => {
+    return sum + addon.price;
+  }, 0);
+
+  const newDailyRate = plan.dailyRate + totalAddonPrice;
+  const newTotalCost = newDailyRate * plan.days;
+
+  return {
+    ...plan,
+    dailyRate: newDailyRate,
+    totalCost: newTotalCost,
+    addonNames: addons.map((addon) => addon.name),
+  };
+}
+
 // Question Four 👇
+
+export function createDialogueWriter(genre) {
+  const temp = {
+    action: function (hero, villain) {
+      return `${hero} says: 'Tujhe toh main dekh lunga, ${villain}!'`;
+    },
+    romance: function (hero, villain) {
+      return `${hero} whispers: '${villain}, tum mere liye sab kuch ho'`;
+    },
+    comedy: function (hero, villain) {
+      return `${hero} laughs: '${villain} bhai, kya kar rahe ho yaar!'`;
+    },
+    drama: function (hero, villain) {
+      return `${hero} cries: '${villain}, tune mera sab kuch cheen liya!'`;
+    },
+  };
+
+  if (!temp[genre]) return null;
+  return function (hero, villain) {
+    if (!hero || !villain) return "...";
+    return temp[genre](hero, villain);
+  };
+}
+
+export function createTicketPricer(basePrice) {
+  if (basePrice <= 0) return null;
+  const func = {
+    seatMultiplexer: function (seatType, isWeekend = false) {
+      if (seatType === "gold") {
+        let price = 0;
+        if (isWeekend) {
+          price = basePrice * 1.5 * 1.3;
+        } else {
+          price = basePrice * 1.5;
+        }
+        return Number(price.toFixed(2));
+      } else if (seatType === "silver") {
+        let price = 0;
+        if (isWeekend) {
+          price = basePrice * 1 * 1.3;
+        } else {
+          price = basePrice * 1;
+        }
+        return Number(price.toFixed(2));
+      } else if (seatType === "platinum") {
+        let price = 0;
+        if (isWeekend) {
+          price = basePrice * 2 * 1.3;
+        } else {
+          price = basePrice * 2;
+        }
+        return Number(price.toFixed(2));
+      }
+    },
+  };
+  return function (seatType, isWeekend) {
+    if (!seatType || typeof seatType !== "string") return null;
+    if (!["silver", "gold", "platinum"].includes(seatType)) return null;
+    return func.seatMultiplexer(seatType, isWeekend);
+  };
+}
+
+export function createRatingCalculator(weights) {
+  if (typeof weights !== "object" || weights === null || Array.isArray(weights))
+    return null;
+  const avg = {
+    average: function (score) {
+      let avvg =
+        (weights?.story ?? 0) * (score?.story ?? 0) +
+        (weights?.acting ?? 0) * (score?.acting ?? 0) +
+        (weights?.direction ?? 0) * (score?.direction ?? 0) +
+        (weights?.music ?? 0) * (score?.music ?? 0);
+      return Number(avvg.toFixed(1));
+    },
+  };
+  return function (score) {
+    if (!score) return null;
+    return avg.average(score);
+  };
+}
+
 // Question Five 👇
 // Question Six 👇
 // Question Seven 👇
