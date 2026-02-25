@@ -260,7 +260,144 @@ export function createRatingCalculator(weights) {
 }
 
 // Question Five 👇
+
+function createDabbawala(name, area) {
+  let deliveries = [];
+  let nextId = 1;
+
+  return {
+    addDelivery(from, to) {
+      if (!from || !to) return -1;
+
+      const delivery = {
+        id: nextId,
+        from,
+        to,
+        status: "pending",
+      };
+
+      deliveries.push(delivery);
+      nextId++;
+
+      return delivery.id;
+    },
+
+    completeDelivery(id) {
+      const found = deliveries.find(d => d.id === id);
+
+      if (!found || found.status === "completed") {
+        return false;
+      }
+
+      found.status = "completed";
+      return true;
+    },
+
+    getActiveDeliveries() {
+      return deliveries
+        .filter(d => d.status === "pending")
+        .map(d => ({ ...d }));
+    },
+
+    getStats() {
+      const total = deliveries.length;
+      const completed = deliveries.filter(d => d.status === "completed").length;
+      const pending = deliveries.filter(d => d.status === "pending").length;
+
+      let successRate = "0.00%";
+
+      if (total > 0) {
+        successRate = ((completed / total) * 100).toFixed(2) + "%";
+      }
+
+      return {
+        name,
+        area,
+        total,
+        completed,
+        pending,
+        successRate,
+      };
+    },
+
+    reset() {
+      deliveries = [];
+      nextId = 1;
+      return true;
+    }
+  };
+}
+
 // Question Six 👇
+
+export function processGuests(guests, filterFn) {
+  if (!Array.isArray(guests) || typeof filterFn !== "function") {
+    return [];
+  }
+
+  const result = [];
+
+  for (let i = 0; i < guests.length; i++) {
+    const guest = guests[i];
+
+    if (filterFn(guest)) {
+      result.push(guest);
+    }
+  }
+
+  return result;
+}
+
+export function notifyGuests(guests, notifyCallback) {
+  if (!Array.isArray(guests) || typeof notifyCallback !== "function") {
+    return [];
+  }
+
+  const result = [];
+
+  for (let i = 0; i < guests.length; i++) {
+    const guest = guests[i];
+
+    const callbackResult = notifyCallback(guest);
+
+    result.push(callbackResult);
+  }
+
+  return result;
+}
+
+export function handleRSVP(guest, onAccept, onDecline) {
+  if (!guest) return null;
+
+  if (typeof onAccept !== "function" || typeof onDecline !== "function") {
+    return null;
+  }
+
+  if (guest.rsvp === "yes") {
+    return onAccept(guest);
+  } else if (guest.rsvp === "no") {
+    return onDecline(guest);
+  } else {
+    return null;
+  }
+}
+
+export function transformGuestList(guests, ...transformFns) {
+  if (!Array.isArray(guests)) return [];
+
+  let result = guests;
+
+  for (let i = 0; i < transformFns.length; i++) {
+    const fn = transformFns[i];
+
+    if (typeof fn === "function") {
+      result = fn(result);
+    }
+  }
+
+  return result;
+}
+
 // Question Seven 👇
 // Question Eight 👇
 // Question Nine 👇
