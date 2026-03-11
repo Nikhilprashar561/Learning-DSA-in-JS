@@ -210,7 +210,123 @@ export function diwaliLightsPlan(lightStrings, budget) {
 
 
 // Question Seven 👇
+
+export function iplPointsTable(matches) {
+    if (!Array.isArray(matches) || matches.length === 0) {
+    return [];
+  }
+
+  const tbl = {};
+
+  for (let i = 0; i < matches.length; i++) {
+
+    const { team1, team2, result, winner } = matches[i];
+
+    // console.log(table)
+
+    if (!tbl[team1]) {
+      tbl[team1] = { team: team1, played: 0, won: 0, lost: 0, tied: 0, noResult: 0, points: 0 };
+    }
+
+    if (!tbl[team2]) {
+      tbl[team2] = { team: team2, played: 0, won: 0, lost: 0, tied: 0, noResult: 0, points: 0 };
+    }
+
+    tbl[team1].played++;
+    tbl[team2].played++;
+
+    if (result === "win") {
+
+      tbl[winner].won++;
+      tbl[winner].points += 2;
+
+      const loser = winner === team1 ? team2 : team1;
+      tbl[loser].lost++;
+
+    } 
+    else if (result === "tie") {
+
+      tbl[team1].tied++;
+      tbl[team2].tied++;
+
+      tbl[team1].points += 1;
+      tbl[team2].points += 1;
+
+    } 
+    else if (result === "no_result") {
+
+      tbl[team1].noResult++;
+      tbl[team2].noResult++;
+
+      tbl[team1].points += 1;
+      tbl[team2].points += 1;
+
+    }
+  }
+
+  const resArr = Object.values(tbl);
+
+  resArr.sort((a, b) => {
+    if (b.points !== a.points) {
+      return b.points - a.points;
+    }
+    return a.team.localeCompare(b.team);
+  });
+
+  return resArr;
+}
+
+
 // Question Eight 👇
+
+export function calculateEMI(principal, monthlyRate, emi) {
+  if (
+    typeof principal !== "number" ||
+    typeof monthlyRate !== "number" ||
+    typeof emi !== "number"
+  ) {
+    return { months: -1, totalPaid: -1, totalInterest: -1 };
+  }
+  if (principal <= 0 || monthlyRate <= 0 || emi <= 0) {
+    return { months: -1, totalPaid: -1, totalInterest: -1 };
+  }
+
+
+  let remaining = principal;
+  let months = 0;
+  let totalPaid = 0;
+
+  let firstMonthInt = principal * monthlyRate;
+
+  if (emi <= firstMonthInt) {
+    return { months: -1, totalPaid: -1, totalInterest: -1 };
+  }
+
+  while (remaining > 0) {
+    let interest = remaining * monthlyRate;
+    remaining = remaining + interest;
+
+    if (remaining < emi) {
+      totalPaid += remaining;
+      remaining = 0;
+    } else {
+      remaining = remaining - emi;
+      totalPaid += emi;
+    }
+    months++;
+  }
+
+  let totalInterest = totalPaid - principal;
+
+  totalInterest = Number(totalInterest.toFixed(2));
+  totalPaid = Number(totalPaid.toFixed(2));
+  // console.log("Yeh Kya hai",totalInterest)
+
+  // console.log({month, totalPaid, totalInterest})
+  return { months, totalPaid, totalInterest };
+}
+
+
 // Question Nine 👇
 // Question Ten 👇
 // Question Eleven 👇
