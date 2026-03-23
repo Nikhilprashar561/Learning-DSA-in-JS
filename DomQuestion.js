@@ -547,8 +547,462 @@ export function setupCardEditor(cardElement) {
 }
 
 // 07 Question 👇
+export function validateName(name) {
+  if (typeof name !== "string") {
+    return {
+      valid: false,
+      error: "Naam string hona chahiye",
+    };
+  }
+  if (name.trim().length < 2) {
+    return {
+      valid: false,
+      error: "Naam mein kam se kam 2 characters hone chahiye",
+    };
+  }
+  if (name.trim().length > 50) {
+    return {
+      valid: false,
+      error: "Naam 50 characters se zyada nahi ho sakta",
+    };
+  }
+  if (!/\s/.test(name) || !/^[A-Za-z ]+$/.test(name)) {
+    return {
+      valid: false,
+      error: "Naam mein sirf letters aur spaces allowed hain",
+    };
+  }
+  return { valid: true, error: null };
+}
+
+export function validateDate(dateString) {
+  if (typeof dateString !== "string") {
+    return {
+      valid: false,
+      error: "Date string honi chahiye",
+    };
+  }
+  const date = new Date();
+
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  const overall = `${year}-${month}-${day}`;
+  const regex = /^\d{4}-\d{2}-\d{2}$/;
+
+  if (!regex.test(overall) || !regex.test(dateString)) {
+    return {
+      valid: false,
+      error: "Date YYYY-MM-DD format mein honi chahiye",
+    };
+  }
+
+  if (dateString < overall) {
+    return {
+      valid: false,
+      error: "Date aaj ya future ki honi chahiye",
+    };
+  }
+
+  return {
+    valid: true,
+    error: null,
+  };
+}
+
+export function validateAartiType(type) {
+  if (typeof type !== "string") {
+    return {
+      valid: false,
+      error: "Aarti type string hona chahiye",
+    };
+  }
+  if (!["morning", "evening", "special"].includes(type)) {
+    return {
+      valid: false,
+      error: "Aarti type morning, evening, ya special mein se hona chahiye",
+    };
+  }
+  return { valid: true, error: null };
+}
+
+export function setupAartiForm(formElement, onSuccess, onError) {
+  if (formElement === null || formElement === undefined) return null;
+  if (typeof onSuccess !== "function" || typeof onError !== "function")
+    return null;
+
+  let nam = null;
+  let dat = null;
+  let artiType = null;
+  let errorsArray = []
+
+  function attach() {
+    function handle(e) {
+      e.preventDefault();
+      nam = formElement.elements.name.value;
+      dat = formElement.elements.date.value;
+      artiType = formElement.elements.aartiType.value;
+      if(!nam) errorsArray.push("Name is required");
+      if(!dat) errorsArray.push("Date is required");
+      if(!artiType) errorsArray.push("AartiType is required")
+      if (errorsArray.length > 0) {
+        onError(errorsArray);
+        return;
+      }
+      onSuccess({ name: nam, date: dat, aartiType: artiType });
+    }
+    formElement.addEventListener("submit", handle);
+
+    return function () {
+      formElement.removeEventListener("submit", handle);
+    };
+  }
+
+  const detach = attach();
+  return detach;
+}
+
+export function createBookingSummary(booking) {
+  if (booking === null || booking === undefined) return null;
+
+  if (!booking.name || !booking.date || !booking.aartiType) return null;
+
+  const div = document.createElement("div");
+  div.classList.add("booking-summary");
+
+  const h3 = document.createElement("h3");
+  const p1 = document.createElement("p");
+  const p2 = document.createElement("p");
+  const p3 = document.createElement("p");
+
+  h3.textContent = `Booking Confirmation`;
+
+  p1.classList.add("booking-name");
+  p2.classList.add("booking-date");
+  p3.classList.add("booking-type");
+
+  p1.textContent = `Bhakt: ${booking.name}`;
+  p2.textContent = `Date: ${booking.date}`;
+  p3.textContent = `Aarti: ${booking.aartiType}`;
+
+  div.appendChild(h3);
+  div.appendChild(p1);
+  div.appendChild(p2);
+  div.appendChild(p3);
+
+  return div;
+}
+
 // 08 Question 👇
+
+export function renderKiteCard(kite) {
+  if (kite === null || kite === undefined) return null;
+  const { name, color, size, maker, image } = kite;
+  if (!name || !color || !size || !maker || !image) {
+    return null;
+  }
+  const div = document.createElement("div");
+
+  div.classList.add("kite-card");
+
+  const img = document.createElement("img");
+  const h3 = document.createElement("h3");
+  const p1 = document.createElement("p");
+  const p2 = document.createElement("p");
+
+  img.src = `${image}`;
+  img.alt = `${name}`;
+
+  h3.classList.add("kite-name");
+  h3.textContent = `${name}`;
+
+  p1.classList.add("kite-maker");
+  p1.textContent = `by ${maker}`;
+
+  p2.classList.add("kite-info");
+  p2.textContent = `${size} - ${color}`;
+
+  div.appendChild(img);
+  div.appendChild(h3);
+  div.appendChild(p1);
+  div.appendChild(p2);
+
+  return div;
+}
+
+export function renderGallery(container, kites) {
+  if (container === null || container === undefined) return -1;
+  if (!Array.isArray(kites)) return -1;
+
+  container.innerHTML = "";
+
+  let temp = 0;
+
+  for (let kite of kites) {
+    const card = renderKiteCard(kite);
+    if (card == null) continue;
+    container.appendChild(card);
+    temp++;
+  }
+  return temp;
+}
+export function filterKites(container, kites, filterFn) {
+  if (container === null) return -1;
+  if (!Array.isArray(kites)) return -1;
+  if (typeof filterFn !== "function") return -1;
+
+  container.innerHTML = "";
+
+  let temp = 0;
+
+  const fil = kites.filter(filterFn);
+  for (let kite of fil) {
+    const card = renderKiteCard(kite);
+    if (card == null) continue;
+    container.appendChild(card);
+    temp++;
+  }
+  return temp;
+}
+
+export function sortAndRender(container, kites, sortField, order) {
+  if (container === null) return [];
+  if (!Array.isArray(kites)) return [];
+
+  const copy = [...kites];
+
+  copy.sort((a, b) => {
+    const valA = a[sortField];
+    const valB = b[sortField];
+
+    if (order === "desc") {
+      return valB.localeCompare(valA);
+    } else {
+      return valA.localeCompare(valB);
+    }
+  });
+
+  for (let kite of copy) {
+    const card = renderKiteCard(kite);
+    container.appendChild(card);
+  }
+  return copy;
+}
+
+export function renderEmptyState(container, message) {
+  if (container === null || container === undefined) return false;
+  if (container.children.length > 0) return false;
+
+  if (container.children.length < 1) {
+    const p = document.createElement("p");
+    p.classList.add("empty-state");
+
+    p.textContent = `${message}`;
+
+    container.appendChild(p);
+    return true;
+  }
+}
+
 // 09 Question 👇
+
+export function findQueueContainer(element) {
+  if (element === null || element === undefined) return null;
+
+  const ances = element.closest(".queue-container");
+  if (!ances) return null;
+  return ances;
+}
+
+export function getNextInQueue(element) {
+  if (element === null || element === undefined) return null;
+  const nextSibling = element.nextElementSibling;
+  if (!nextSibling) return null;
+
+  return nextSibling;
+}
+
+export function getPreviousInQueue(element) {
+  if (element === null || element === undefined) return null;
+  const prevSibling = element.previousElementSibling;
+  if (!prevSibling) return null;
+  return prevSibling;
+}
+
+export function getQueuePosition(element) {
+  if (element === null || element === undefined) return -1;
+  if (!element.parentNode) return -1;
+
+  const find = element.parentNode.children;
+
+  if (!find || find === null) return -1;
+
+  for (let i = 0; i < find.length; i++) {
+    if (find[i] === element) {
+      return i + 1;
+    }
+  }
+  return -1;
+}
+
+export function moveToFront(element) {
+  if (element === null || element === undefined) return false;
+
+  const prnt = element.parentNode;
+  if (!prnt) return false;
+
+  if (element === prnt.firstElementChild) return false;
+  const add = element.parentNode.insertBefore(
+    element,
+    prnt.firstChild,
+  );
+  if(add) return true;
+  if (!add) return false;
+
+  return true;
+}
+
+export function removeFromQueue(element) {
+  if (element === null || element === undefined) return null;
+  const chk = element.parentNode;
+  if (!chk) return null;
+  const remove = element.parentNode.removeChild(element);
+
+  return remove;
+}
+
+export function getQueueStats(queueContainer) {
+    if (queueContainer === null || queueContainer === undefined) return null;
+
+  let total = 0;
+  let waiting = 0;
+  let serving = 0;
+  let completed = 0;
+
+  const chld = queueContainer.children;
+
+  for (let child of chld) {
+    if (child.classList.contains("waiting")) {
+      waiting++;
+    }
+    if (child.classList.contains("serving")) {
+      serving++;
+    }
+    if (child.classList.contains("completed")) {
+      completed++;
+    }
+    total++;
+  }
+  return {
+    total,
+    waiting,
+    serving,
+    completed,
+  };
+}
+
 // 10 Question 👇
+
+export function createPandalElement(pandal) {
+  if (pandal === null || pandal === undefined || !pandal) return null;
+  const { name, zone, theme, budget, rating } = pandal;
+
+  if (!name || !zone || !theme || !budget || !rating) {
+    return null;
+  }
+
+  if (typeof budget !== "number") return null;
+  if (typeof rating !== "number") return null;
+
+  const div = document.createElement("div");
+  div.classList.add("pandal");
+
+  div.dataset.name = `${name}`;
+  div.dataset.zone = `${zone}`;
+  div.dataset.theme = `${theme}`;
+  div.dataset.budget = `${budget}`;
+  div.dataset.rating = `${rating}`;
+
+  div.textContent = name;
+
+  return div;
+}
+
+export function getPandalInfo(element) {
+  if (element === null || element === undefined) return null;
+
+  const chmaka = element.dataset;
+
+  return {
+    name: chmaka.name,
+    zone: chmaka.zone,
+    theme: chmaka.theme,
+    budget: Number(chmaka.budget),
+    rating: Number(chmaka.rating),
+  };
+}
+
+export function updatePandalRating(element, newRating) {
+  if (element === null || element === undefined) return null;
+
+  if (!element.dataset.rating) return null;
+
+  if (typeof newRating !== "number") return null;
+  if (newRating < 0 || newRating > 5) return null;
+
+  const oldOne = element.dataset.rating;
+  element.dataset.rating = newRating;
+
+  return Number(oldOne);
+}
+
+export function filterPandalsByZone(container, zone) {
+  if (container === null || container === undefined) return [];
+  if (typeof zone !== "string") return [];
+
+  const pandal = container.querySelectorAll(".pandal");
+
+  let arr = [];
+
+  for (let key of pandal) {
+    if (key.dataset.zone === zone) {
+      arr.push(key);
+    }
+  }
+
+  return arr;
+}
+
+export function getPandalsByBudgetRange(container, min, max) {
+  if (container === null || container === undefined) return [];
+  if (typeof min !== "number" || typeof max !== "number") return [];
+
+  const pandal = container.querySelectorAll(".pandal");
+
+  const arr = [];
+
+  for (const element of pandal) {
+    const value = Number(element.dataset.budget);
+    if (value <= max && value >= min) {
+      arr.push(element);
+    }
+  }
+  return arr;
+}
+
+export function sortPandalsByRating(container) {
+  if (container === null || container === undefined) return [];
+  const arr = Array.from(container.querySelectorAll('.pandal'));
+
+  arr.sort((a, b) => {
+    return Number(b.dataset.rating) - Number(a.dataset.rating);
+  });
+
+  arr.forEach((e) => container.appendChild(e))
+
+  return arr;
+}
+
 // 11 Question 👇
 // 12 Question 👇
